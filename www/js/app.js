@@ -1,4 +1,4 @@
-angular.module('HypeM', ['ionic', 'ngRoute'])
+angular.module('HypeM', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards'])
 
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
@@ -12,6 +12,19 @@ angular.module('HypeM', ['ionic', 'ngRoute'])
     }).
     otherwise({ redirectTo: '/' });
 }])
+
+.directive('noScroll', function() {
+
+	return {
+		restrict: 'A',
+		link: function($scope, $element, $attr) {
+
+			$element.on('touchmove', function(e) {
+				e.preventDefault();
+			});
+		}
+	}
+})
 
 .service('Playlist', ['$http', '$q', function ($http, $q) {
   return {get: function (params) {
@@ -46,11 +59,12 @@ angular.module('HypeM', ['ionic', 'ngRoute'])
 }])
 
 .controller('PlayerCtrl',
-['$scope','Playlist', '$routeParams', '$document', 'Media', '$window', 'Async',
-function ($scope, Playlist, $routeParams, $document, Media, $window, Async) {
+['$scope','Playlist', '$routeParams', '$document', 'Media', '$window', 'Async', 'TDCardDelegate',
+function ($scope, Playlist, $routeParams, $document, Media, $window, Async,  TDCardDelegate) {
   var addToQueue = function(songs, cb) {
     var pending = [];
-    for (var key in songs) {
+    for (var key in songs){
+			//console.log(songs);ngs) {
       if (songs.hasOwnProperty(key) && angular.isObject(songs[key])) {
         pending.push(songs[key]);
       }
@@ -128,6 +142,8 @@ function ($scope, Playlist, $routeParams, $document, Media, $window, Async) {
   $scope.SongName = null;
   $scope.Cover = null;
   $scope.isPlaying = false;
+	$scope.startTime = 30;
+	$scope.playlist = [];
   var currentSongIdx = 0;
   var queue = [];
   var currentPage = 1;
@@ -141,5 +157,54 @@ function ($scope, Playlist, $routeParams, $document, Media, $window, Async) {
     $scope.$apply($scope.nextSong());
   });
 
+	$scope.cardDestroyed = function(index) {
+		//$scope.cards.splice(index, 1);
+	};
+
+	$scope.addCard = function() {
+		//var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+		//newCard.id = Math.random();
+		//$scope.cards.push(angular.extend({}, newCard));
+	};
+	$scope.cardSwipedLeft = function(index) {
+		console.log('LEFT , indexSWIPE');
+		$scope.nextSong();
+	};
+	$scope.cardSwipedRight = function(index) {
+		console.log('RIGHT SWIPE', index);
+		$scope.nextSong();
+	};
 
 }]);
+
+//.controller('CardsCtrl', function($scope, TDCardDelegate, Playlist) {
+//	console.log('CARDS CTRL');
+//	var cardTypes = [
+//		{ image: 'https://pbs.twimg.com/profile_images/546942133496995840/k7JAxvgq.jpeg' },
+//		{ image: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png' },
+//		{ image: 'https://pbs.twimg.com/profile_images/491995398135767040/ie2Z_V6e.jpeg' },
+//	];
+//
+//	$scope.cards = Array.prototype.slice.call(cardTypes, 0);
+//
+//	$scope.cardDestroyed = function(index) {
+//		$scope.cards.splice(index, 1);
+//	};
+//
+//	$scope.addCard = function() {
+//		var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+//		newCard.id = Math.random();
+//		$scope.cards.push(angular.extend({}, newCard));
+//	}
+//})
+//
+//	.controller('CardCtrl', function($scope, TDCardDelegate, Playlist) {
+//		$scope.cardSwipedLeft = function(index) {
+//			console.log('LEFT SWIPE');
+//			$scope.addCard();
+//		};
+//		$scope.cardSwipedRight = function(index) {
+//			console.log('RIGHT SWIPE');
+//			$scope.addCard();
+//		};
+//	});

@@ -2,6 +2,7 @@
   "name": "HypeM",
   "version": "0.0.1",
   "dependencies": {
+    "ionic-contrib-tinder-cards": "*",
+    "collide": "~0.0.4"
   }
 }
-
