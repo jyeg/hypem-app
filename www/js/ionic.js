@@ -17,7 +17,7 @@ window.ionic = {
   controllers: {},
   views: {},
   version: '0.9.17'
-};;
+};
 (function(ionic) {
 
   var bezierCoord = function (x,y) {
@@ -131,7 +131,6 @@ window.ionic = {
     }
   };
 })(ionic);
-;
 (function(ionic) {
   ionic.DomUtil = {
     getTextBounds: function(textNode) {
@@ -202,7 +201,6 @@ window.ionic = {
     }
   };
 })(window.ionic);
-;
 /**
  * ion-events.js
  *
@@ -298,7 +296,6 @@ window.ionic = {
   ionic.offGesture = function() { return ionic.EventController.offGesture.apply(ionic.EventController.offGesture, arguments); };
 
 })(window.ionic);
-;
 /**
   * Simple gesture controllers with some common gestures that emit
   * gesture events.
@@ -1727,7 +1724,6 @@ window.ionic = {
     }
   };
 })(window.ionic);
-;
 (function(ionic) {
 
   ionic.Platform = {
@@ -1895,7 +1891,6 @@ window.ionic = {
   ionic.on("tap", tapPolyfill, window);
 
 })(this, document, ionic);
-;
 (function(ionic) {
   
   /**
@@ -2062,7 +2057,6 @@ window.ionic = {
   });
 
 })(window.ionic);
-;
 /*
  * Scroller
  * http://github.com/zynga/scroller
@@ -4073,7 +4067,6 @@ ionic.views.Scroll = ionic.views.View.inherit({
 });
 
 })(ionic);
-;
 (function(ionic) {
 'use strict';
   /**
@@ -4100,7 +4093,6 @@ ionic.views.Scroll = ionic.views.View.inherit({
   });
 
 })(ionic);
-;
 (function(ionic) {
 'use strict';
 
@@ -4195,7 +4187,6 @@ ionic.views.Scroll = ionic.views.View.inherit({
   });
 
 })(ionic);
-;
 (function(ionic) {
 'use strict';
 
@@ -4603,7 +4594,7 @@ ionic.views.Scroll = ionic.views.View.inherit({
           });
           this._dragOp.start(e);
           e.preventDefault();
-          return;
+
         }
       }
 
@@ -4612,7 +4603,7 @@ ionic.views.Scroll = ionic.views.View.inherit({
         this._dragOp = new SlideDrag({ el: this.el });
         this._dragOp.start(e);
         e.preventDefault();
-        return;
+
       }
 
       // We aren't handling it, so pass it up the chain
@@ -4690,7 +4681,6 @@ ionic.views.Scroll = ionic.views.View.inherit({
   });
 
 })(ionic);
-;
 (function(ionic) {
 'use strict';
   /**
@@ -4734,7 +4724,6 @@ ionic.views.Scroll = ionic.views.View.inherit({
   });
 
 })(ionic);
-;
 (function(ionic) {
 'use strict';
 
@@ -4771,7 +4760,6 @@ ionic.views.Scroll = ionic.views.View.inherit({
   });
 
 })(ionic);
-;
 (function(ionic) {
 'use strict';
 
@@ -4825,7 +4813,6 @@ ionic.views.Scroll = ionic.views.View.inherit({
   });
 
 })(ionic);
-;
 (function(ionic) {
 'use strict';
   /**
@@ -4928,7 +4915,6 @@ ionic.views.Scroll = ionic.views.View.inherit({
   });
 
 })(ionic);
-;
 /*
  * Adapted from Swipe.js 2.0
  *
@@ -5235,7 +5221,7 @@ ionic.views.Slider = ionic.views.View.inherit({
       move: function(event) {
 
         // ensure swiping with one touch and not pinching
-        if ( event.touches.length > 1 || event.scale && event.scale !== 1) return
+        if ( event.touches.length > 1 || event.scale && event.scale !== 1) return;
 
         if (options.disableScroll) event.preventDefault();
 
@@ -5245,7 +5231,7 @@ ionic.views.Slider = ionic.views.View.inherit({
         delta = {
           x: touches.pageX - start.x,
           y: touches.pageY - start.y
-        }
+        };
 
         // determine if scrolling test has run - one time test
         if ( typeof isScrolling == 'undefined') {
@@ -5368,11 +5354,11 @@ ionic.views.Slider = ionic.views.View.inherit({
 
         // kill touchmove and touchend event listeners until touchstart called again
         if(browser.touch) {
-          element.removeEventListener('touchmove', events, false)
+          element.removeEventListener('touchmove', events, false);
           element.removeEventListener('touchend', events, false)
         } else {
-          element.removeEventListener('mousemove', events, false)
-          element.removeEventListener('mouseup', events, false)
+          element.removeEventListener('mousemove', events, false);
+          element.removeEventListener('mouseup', events, false);
           document.removeEventListener('mouseup', events, false);
         }
 
@@ -5389,7 +5375,7 @@ ionic.views.Slider = ionic.views.View.inherit({
 
       }
 
-    }
+    };
 
     // Public API
     this.setup = function() {
@@ -5713,7 +5699,6 @@ ionic.views.TabBar = ionic.views.View.inherit({
 });
 
 })(window.ionic);
-;
 (function(ionic) {
 'use strict';
 
@@ -5794,7 +5779,6 @@ ionic.views.TabBar = ionic.views.View.inherit({
   });
 
 })(window.ionic);
-;
 (function(ionic) {
 'use strict';
 
@@ -6223,7 +6207,6 @@ ionic.controllers.NavController = ionic.controllers.ViewController.inherit({
   });
 
 })(ionic);
-;
 (function(ionic) {
 'use strict';
 

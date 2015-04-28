@@ -1,0 +1,19 @@
+<ion-view view-title="Rejects">
+    <ion-header-bar class="bar-stable">
+        <h1 class="title">Rejects</h1>
+    </ion-header-bar>
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="song in rejected" class="item-avatar">
+                <img ng-src="{{ song.Cover }}">
+                <h2>{{ song.SongName }}</h2>
+                <p>{{ song.ArtistName }}</p>
+
+                <ion-option-button class="button-assertive"
+                                   ng-click="removeSong(song, $index)">
+                    <i class="ion-minus-circled"></i>
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

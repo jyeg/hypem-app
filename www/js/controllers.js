@@ -35,138 +35,160 @@ angular.module('R8eor.controllers', [])
 
 .controller('PlaylistsCtrl', function($scope) {
   $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
+    { title: 'Popular', id: 'Popular' },
+    { title: 'Fresh', id: 'Fresh' }
   ];
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
+.controller('FavoritesCtrl', function($scope, User) {
+  // get the list of our favorites from the user service
+  $scope.favorites = User.favorites;
+
+  $scope.removeSong = function(song, index){
+
+  };
+})
+
+.controller('RejectsCtrl', function($scope, User) {
+  // get the list of our favorites from the user service
+  $scope.rejects = User.rejected;
+
+  $scope.removeSong = function(song, index){
+
+  };
+})
 
 .controller('PlayerCtrl',
-	['$scope','Playlist', '$routeParams', '$document', 'Media', '$window', 'Async', 'TDCardDelegate',
-		function ($scope, Playlist, $routeParams, $document, Media, $window, Async,  TDCardDelegate) {
-			var addToQueue = function(songs, cb) {
-				var pending = [];
-				for (var key in songs){
-					//console.log(songs);ngs) {
-					if (songs.hasOwnProperty(key) && angular.isObject(songs[key])) {
-						pending.push(songs[key]);
-					}
-				}
+  ['$scope','Playlist','$routeParams', '$document', 'Media', '$window', 'Async', 'TDCardDelegate', 'User',
+    function ($scope, Playlist, $routeParams, $document, Media, $window, Async,  TDCardDelegate, User) {
+      var addToQueue = function(songs, cb) {
+        var pending = [];
+        for (var key in songs){
+          //console.log(songs);ngs) {
+          if (songs.hasOwnProperty(key) && angular.isObject(songs[key])) {
+            pending.push(songs[key]);
+          }
+        }
 
-				Async.map(pending, function (song, callback) {
-					Media.get(song.mediaid).then(function (media) {
-						song.url = media.url;
-						callback(null, song);
-					}).catch (function (e) {
-						callback(e);
-					});
-				}, function (e, mutated) {
-					$scope.Library = $scope.Library.concat(mutated);
-					queue = queue.concat(mutated);
-					cb();
-				});
-			};
+        Async.map(pending, function (song, callback) {
+          Media.get(song.mediaid).then(function (media) {
+            song.url = media.url;
+            callback(null, song);
+          }).catch (function (e) {
+            callback(e);
+          });
+        }, function (e, mutated) {
+          $scope.Library = $scope.Library.concat(mutated);
+          queue = queue.concat(mutated);
+          cb();
+        });
+      };
 
-			var getPlaylist = function (cb) {
-				Playlist.get({playlist: $routeParams.playlist || 'popular', pagenum: currentPage}).then(function(songs) {
-					currentPage++;
-					addToQueue(songs, function () {
-						// playerControl is CB
-						cb();
-					});
-				}).catch(function(e) {
-					cb();
-				});
-			};
+      var getPlaylist = function (cb) {
+        Playlist.get({playlist: $routeParams.playlist || 'popular', pagenum: currentPage}).then(function(songs) {
+          currentPage++;
+          addToQueue(songs, function () {
+            // playerControl is CB
+            cb();
+          });
+        }).catch(function(e) {
+          cb();
+        });
+      };
 
-			$scope.playerControl = function () {
-				if (!$scope.isPlaying) {
-					if (audio.getAttribute('src') === null) {
-						setPlayer();
-					}
-					audio.play();
-					$scope.isPlaying = true;
-				} else {
-					audio.pause();
-					$scope.isPlaying = false;
-				}
-			};
+      $scope.playerControl = function () {
+        if (!$scope.isPlaying) {
+          if (audio.getAttribute('src') === null) {
+            setPlayer();
+          }
+          audio.play();
+          $scope.isPlaying = true;
+        } else {
+          audio.pause();
+          $scope.isPlaying = false;
+        }
+      };
 
-			$scope.nextSong = function () {
-				currentSongIdx++;
-				setPlayer();
-				audio.play();
-				$scope.isPlaying = true;
-				if (currentSongIdx > 0 && currentSongIdx % 20 === 0) {
-					getPlaylist(function () {
-						console.log('updated!');
-					});
-				}
-			};
+      $scope.nextSong = function () {
+        currentSongIdx++;
+        setPlayer();
+        audio.play();
+        $scope.isPlaying = true;
+        if (currentSongIdx > 0 && currentSongIdx % 20 === 0) {
+          getPlaylist(function () {
+            console.log('updated!');
+          });
+        }
+      };
 
-			$scope.previousSong = function () {
-				if (currentSongIdx > 0 ) {
-					currentSongIdx--;
-					setPlayer();
-					audio.play();
-					$scope.isPlaying = true;
-				}
-			};
+      $scope.previousSong = function () {
+        if (currentSongIdx > 0 ) {
+          currentSongIdx--;
+          setPlayer();
+          audio.play();
+          $scope.isPlaying = true;
+        }
+      };
 
-			var setPlayer = function () {
-				console.log(queue[currentSongIdx]);
-				$scope.ArtistImage = queue[currentSongIdx].thumb_url_artist;
-				$scope.ArtistName = queue[currentSongIdx].artist;
-				$scope.SongName = queue[currentSongIdx].title;
-				$scope.Cover = queue[currentSongIdx].thumb_url_large;
-				$scope.Id = currentSongIdx;
-				audio.src = queue[currentSongIdx].url;
-			};
+      var setPlayer = function () {
+        console.log(queue[currentSongIdx]);
+        $scope.ArtistImage = queue[currentSongIdx].thumb_url_artist;
+        $scope.ArtistName = queue[currentSongIdx].artist;
+        $scope.SongName = queue[currentSongIdx].title;
+        $scope.Cover = queue[currentSongIdx].thumb_url_large;
+        $scope.Id = currentSongIdx;
+        audio.src = queue[currentSongIdx].url;
+      };
 
-			$scope.ArtistImage = null;
-			$scope.ArtistName = null;
-			$scope.SongName = null;
-			$scope.Cover = null;
-			$scope.Id = null;
-			$scope.isPlaying = false;
-			$scope.startTime = 30;
-			$scope.Library = [];
-			var currentSongIdx = 0;
-			var queue = [];
-			var currentPage = 1;
-			var audio = $window.document.getElementById('player');
-			//init
-			getPlaylist(function () {
-				$scope.playerControl();
-			});
+      $scope.ArtistImage = null;
+      $scope.ArtistName = null;
+      $scope.SongName = null;
+      $scope.Cover = null;
+      $scope.Id = null;
+      $scope.isPlaying = false;
+      $scope.startTime = 30;
+      $scope.Library = [];
+      var currentSongIdx = 0;
+      var queue = [];
+      var currentPage = 1;
+      var audio = $window.document.getElementById('player');
+      //init
+      getPlaylist(function () {
+        $scope.playerControl();
+      });
 
-			audio.addEventListener('ended', function () {
-				$scope.$apply($scope.nextSong());
-			});
+      audio.addEventListener('ended', function () {
+        $scope.$apply($scope.nextSong());
+      });
 
-			$scope.cardDestroyed = function(index) {
-				//$scope.cards.splice(index, 1);
-			};
+      $scope.cardDestroyed = function(index) {
+        //$scope.cards.splice(index, 1);
+        $scope.Library.splice(0, 1);
+      };
 
-			$scope.addCard = function() {
-				//var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
-				//newCard.id = Math.random();
-				//$scope.cards.push(angular.extend({}, newCard));
-			};
-			$scope.cardSwipedLeft = function(index) {
-				console.log('LEFT SWIPE', index);
-				$scope.nextSong();
-			};
-			$scope.cardSwipedRight = function(index) {
-				console.log('RIGHT SWIPE', index);
-				$scope.nextSong();
-			};
+      $scope.addCard = function() {
+        //var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+        //newCard.id = Math.random();
+        //$scope.cards.push(angular.extend({}, newCard));
+      };
 
-		}]);
+      $scope.cardSwipedLeft = function(index) {
+        console.log('LEFT SWIPE', index);
+        $scope.nextSong();
+      };
+      $scope.cardSwipedRight = function(index) {
+        var song = $scope.Library.filter(function(val){ return val.mediaid === index });
+        User.addSongToFavorites(song);
+        $scope.nextSong();
+      };
+
+      $scope.removeSong = function(song, index) {
+        User.removeSongFromFavorites(song, index);
+        var song = $scope.Library.filter(function(val){ return val.mediaid === index });
+        User.addSongToRejected(song);
+      }
+
+    }]);

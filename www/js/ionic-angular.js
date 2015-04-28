@@ -49,7 +49,6 @@ angular.module('ionic', [
     'ngTouch',
     'ngSanitize'
 ]);
-;
 angular.module('ionic.service.actionSheet', ['ionic.service.templateLoad', 'ionic.ui.actionSheet', 'ngAnimate'])
 
 .factory('ActionSheet', ['$rootScope', '$document', '$compile', '$animate', '$timeout', 'TemplateLoader',
@@ -122,7 +121,6 @@ angular.module('ionic.service.actionSheet', ['ionic.service.templateLoad', 'ioni
   };
 
 }]);
-;
 angular.module('ionic.service.gesture', [])
 
 .factory('Gesture', [function() {
@@ -135,7 +133,6 @@ angular.module('ionic.service.gesture', [])
     }
   };
 }]);
-;
 angular.module('ionic.service.loading', ['ionic.ui.loading'])
 
 .factory('Loading', ['$rootScope', '$document', '$compile', function($rootScope, $document, $compile) {
@@ -191,7 +188,6 @@ angular.module('ionic.service.loading', ['ionic.ui.loading'])
     }
   };
 }]);
-;
 angular.module('ionic.service.modal', ['ionic.service.templateLoad', 'ngAnimate'])
 
 
@@ -269,7 +265,6 @@ angular.module('ionic.service.modal', ['ionic.service.templateLoad', 'ngAnimate'
     },
   };
 }]);
-;
 (function() {
 'use strict';
 
@@ -364,7 +359,6 @@ angular.module('ionic.service.platform', [])
 });
 
 })(ionic);
-;
 angular.module('ionic.service.popup', ['ionic.service.templateLoad'])
 
 
@@ -422,7 +416,6 @@ angular.module('ionic.service.popup', ['ionic.service.templateLoad'])
     }
   };
 }]);
-;
 angular.module('ionic.service.templateLoad', [])
 
 .factory('TemplateLoader', ['$q', '$http', '$templateCache', function($q, $http, $templateCache) {
@@ -444,7 +437,6 @@ angular.module('ionic.service.templateLoad', [])
     }
   };
 }]);
-;
 (function() {
 'use strict';
 
@@ -495,7 +487,6 @@ angular.module('ionic.ui.actionSheet', [])
 }]);
 
 })();
-;
 (function(ionic) {
 'use strict';
 
@@ -575,7 +566,6 @@ angular.module('ionic.ui.header', ['ngAnimate'])
 });
 
 })(ionic);
-;
 (function() {
 'use strict';
 
@@ -623,7 +613,6 @@ angular.module('ionic.ui.checkbox', [])
 });
 
 })();
-;
 (function() {
 'use strict';
 
@@ -948,7 +937,6 @@ angular.module('ionic.ui.list', ['ngAnimate'])
 }]);
 
 })();
-;
 (function() {
 'use strict';
 
@@ -1383,7 +1371,6 @@ angular.module('ionic.ui.navRouter', ['ionic.service.gesture'])
 }]);
 
 })();
-;
 (function(ionic) {
 'use strict';
 
@@ -1632,7 +1619,6 @@ angular.module('ionic.ui.scroll', [])
 }]);
 
 })();
-;
 (function() {
 'use strict';
 
@@ -1953,7 +1939,6 @@ angular.module('ionic.ui.slideBox', [])
 });
 
 })();
-;
 angular.module('ionic.ui.tabs', ['ngAnimate'])
 
 /**
@@ -2236,7 +2221,6 @@ angular.module('ionic.ui.toggle', [])
 });
 
 })(window.ionic);
-;
 (function() {
 'use strict';
 
@@ -2259,8 +2243,6 @@ angular.module('ionic.ui.virtRepeat', [])
   };
 });
 })(ionic);
-;
-
 (function() {
 'use strict';
 

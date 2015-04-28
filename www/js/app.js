@@ -23,20 +23,39 @@ angular.module('R8eor', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards', 'R8
 				controller: 'AppCtrl'
 			})
 
-			.state('app.search', {
-				url: "/search",
+			//.state('app.search', {
+			//	url: "/search",
+			//	views: {
+			//		'menuContent': {
+			//			templateUrl: "partials/search.html"
+			//		}
+			//	}
+			//})
+
+			//.state('app.browse', {
+			//	url: "/browse",
+			//	views: {
+			//		'menuContent': {
+			//			templateUrl: "partials/rejects.html",
+			//			controller: 'RejectsCtrl'
+			//		}
+			//	}
+			//})
+			.state('app.favorites', {
+				url: "/favorites",
 				views: {
 					'menuContent': {
-						templateUrl: "partials/search.html"
+						templateUrl: "partials/favorites.html",
+						controller: 'FavoritesCtrl'
 					}
 				}
 			})
-
-			.state('app.browse', {
-				url: "/browse",
+			.state('app.rejects', {
+				url: "/rejects",
 				views: {
 					'menuContent': {
-						templateUrl: "partials/browse.html"
+						templateUrl: "partials/rejects.html",
+						controller: 'RejectsCtrl'
 					}
 				}
 			})
@@ -60,7 +79,7 @@ angular.module('R8eor', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards', 'R8
 				}
 			});
 		// if none of the above states are matched, use this as the fallback
-		$urlRouterProvider.otherwise('/app/playlists');
+		$urlRouterProvider.otherwise('/app/favorites');
 	})
 //	['$routeProvider', function ($routeProvider) {
 //    $routeProvider.
@@ -85,6 +104,44 @@ angular.module('R8eor', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards', 'R8
 //    otherwise({ redirectTo: '/' });
 //}])
 //
+.factory('User', function() {
+
+	var o = {
+		favorites: [],
+		rejected: []
+	};
+	o.addSongToFavorites = function(song) {
+		// make sure there's a song to add
+		if (!song) return false;
+		console.log("in user factory add song to favorites list", song);
+		// add to favorites array
+		o.favorites.unshift(song);
+	};
+	o.removeSongFromFavorites = function(song, index) {
+		// make sure there's a song to add
+		if (!song) return false;
+		console.log("in user factory", index);
+		// add to favorites array
+		o.favorites.splice(index, 1);
+	};
+
+	o.addSongToRejected = function(song) {
+		// make sure there's a song to add
+		if (!song) return false;
+		// add to favorites array
+		o.rejected.unshift(song);
+	};
+	o.removeSongFromRejected = function(song, index) {
+		// make sure there's a song to add
+		if (!song) return false;
+		console.log("in user factory remove rejected", index);
+		// add to favorites array
+		o.rejected.splice(index, 1);
+	};
+
+	return o;
+})
+
 .directive('noScroll', function() {
 
 	return {
