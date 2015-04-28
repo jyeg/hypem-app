@@ -4,11 +4,21 @@ angular.module('HypeM', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards'])
     $routeProvider.
     when('/', {
       templateUrl: 'partials/player.html',
-      controller: 'PlayerCtrl'
+      controller: 'PlayerCtrl',
+			//resolve: {
+			//	Id: function(){
+			//		return Media.get();
+			//	}
+			//}
     }).
     when('/latest', {
       templateUrl: 'partials/player.html',
-      controller: 'PlayerCtrl'
+      controller: 'PlayerCtrl',
+			//resolve: {
+			//	library: function (Media) {
+			//		return Media.get();
+			//	}
+			//}
     }).
     otherwise({ redirectTo: '/' });
 }])
@@ -78,6 +88,7 @@ function ($scope, Playlist, $routeParams, $document, Media, $window, Async,  TDC
         callback(e);
       });
     }, function (e, mutated) {
+			$scope.Library = $scope.Library.concat(mutated);
       queue = queue.concat(mutated);
       cb();
     });
@@ -87,6 +98,7 @@ function ($scope, Playlist, $routeParams, $document, Media, $window, Async,  TDC
     Playlist.get({playlist: $routeParams.playlist || 'popular', pagenum: currentPage}).then(function(songs) {
       currentPage++;
       addToQueue(songs, function () {
+				// playerControl is CB
         cb();
       });
     }).catch(function(e) {
@@ -134,6 +146,7 @@ function ($scope, Playlist, $routeParams, $document, Media, $window, Async,  TDC
     $scope.ArtistName = queue[currentSongIdx].artist;
     $scope.SongName = queue[currentSongIdx].title;
     $scope.Cover = queue[currentSongIdx].thumb_url_large;
+		$scope.Id = currentSongIdx;
     audio.src = queue[currentSongIdx].url;
   };
 
@@ -141,9 +154,10 @@ function ($scope, Playlist, $routeParams, $document, Media, $window, Async,  TDC
   $scope.ArtistName = null;
   $scope.SongName = null;
   $scope.Cover = null;
-  $scope.isPlaying = false;
+	$scope.Id = null;
+	$scope.isPlaying = false;
 	$scope.startTime = 30;
-	$scope.playlist = [];
+	$scope.Library = [];
   var currentSongIdx = 0;
   var queue = [];
   var currentPage = 1;
@@ -167,7 +181,7 @@ function ($scope, Playlist, $routeParams, $document, Media, $window, Async,  TDC
 		//$scope.cards.push(angular.extend({}, newCard));
 	};
 	$scope.cardSwipedLeft = function(index) {
-		console.log('LEFT , indexSWIPE');
+		console.log('LEFT SWIPE', index);
 		$scope.nextSong();
 	};
 	$scope.cardSwipedRight = function(index) {

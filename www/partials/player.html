@@ -1,26 +1,28 @@
 <audio id="player"></audio>
 <td-cards>
-<td-card on-destroy="" on-swipe-left="cardSwipedLeft()" on-swipe-right="cardSwipedRight()" on-partial-swipe="cardPartialSwipe(amt)" class="card-{{Id}}">
-    <div class="item">
-        <!--<img src={{ArtistImage}}>-->
-        <h2>{{SongName}}</h2>
-        <p>{{ArtistName}}</p>
-    </div>
-    <div class="item item-image">
-        <img src={{Cover}}>
-  </div>
+    <td-card ng-repeat="song in Library"
+            on-destroy="" on-swipe-left="cardSwipedLeft()" on-swipe-right="cardSwipedRight()"
+             on-partial-swipe="cardPartialSwipe(amt)" class="card-{{Id}}">
+        <div class="item">
+            <!--<img src={{ArtistImage}}>-->
+            <h2>{{SongName}}</h2>
 
-</td-card>
+            <p>{{ArtistName}}</p>
+        </div>
+        <div class="item item-image">
+            <img src={{Cover}}>
+        </div>
+    </td-card>
 </td-cards>
 <div class="tabs tabs-icon-only">
-  <div class="tab-item">
-    <i class="icon ion-ios7-skipbackward" ng-click="previousSong()"></i>
-  </div>
-  <div class="tab-item">
-    <i class="icon ion-pause" ng-click="playerControl()" ng-show="isPlaying"></i>
-    <i class="icon ion-play" ng-click="playerControl()" ng-hide="isPlaying"></i>
-  </div>
-  <div class="tab-item">
-    <i class="icon ion-ios7-skipforward" ng-click="nextSong()"></i>
-  </div>
+    <div class="tab-item">
+        <i class="icon ion-ios7-skipbackward" ng-click="previousSong()"></i>
+    </div>
+    <div class="tab-item">
+        <i class="icon ion-pause" ng-click="playerControl()" ng-show="isPlaying"></i>
+        <i class="icon ion-play" ng-click="playerControl()" ng-hide="isPlaying"></i>
+    </div>
+    <div class="tab-item">
+        <i class="icon ion-ios7-skipforward" ng-click="nextSong()"></i>
+    </div>
 </div>
