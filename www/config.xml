@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.yamilasusta.hypem" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>HypeM</name>
+<widget id="com.r8eor" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>R8eor</name>
     <description>
-        HypeM player
+        R8eor player
     </description>
-    <author email="hello@yamilasusta.com" href="http://yamilasusta.com">
-        Yamil Asusta
+    <author email="jmyeglinski@gmail.com" href="http://yamilasusta.com">
+        John Yeglinski
     </author>
     <feature name="http://api.phonegap.com/1.0/device" />
     <preference name="permissions" value="none" />
@@ -21,7 +21,7 @@
     <preference name="DisallowOverscroll" value="true" />
     <preference name="exit-on-suspend" value="false" />
     <preference name="show-splash-screen-spinner" value="true" />
-    <preference name="auto-hide-splash-screen" value="true" />
+    <preference name="auto-hide-splash-screen" value="false" />
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="7" />
     <preference name="android-installLocation" value="auto" />

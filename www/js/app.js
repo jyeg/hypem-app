@@ -1,28 +1,90 @@
-angular.module('HypeM', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards'])
+angular.module('R8eor', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards', 'R8eor.controllers'])
 
-.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.
-    when('/', {
-      templateUrl: 'partials/player.html',
-      controller: 'PlayerCtrl',
-			//resolve: {
-			//	Id: function(){
-			//		return Media.get();
-			//	}
-			//}
-    }).
-    when('/latest', {
-      templateUrl: 'partials/player.html',
-      controller: 'PlayerCtrl',
-			//resolve: {
-			//	library: function (Media) {
-			//		return Media.get();
-			//	}
-			//}
-    }).
-    otherwise({ redirectTo: '/' });
-}])
+.run(function($ionicPlatform) {
+	$ionicPlatform.ready(function() {
+		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+		// for form inputs)
+		if (window.cordova && window.cordova.plugins.Keyboard) {
+			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+		}
+		if (window.StatusBar) {
+			// org.apache.cordova.statusbar required
+			StatusBar.styleDefault();
+		}
+	});
+})
+.config(function($stateProvider, $urlRouterProvider) {
+		$stateProvider
 
+			.state('app', {
+				url: "/app",
+				abstract: true,
+				templateUrl: "partials/menu.html",
+				controller: 'AppCtrl'
+			})
+
+			.state('app.search', {
+				url: "/search",
+				views: {
+					'menuContent': {
+						templateUrl: "partials/search.html"
+					}
+				}
+			})
+
+			.state('app.browse', {
+				url: "/browse",
+				views: {
+					'menuContent': {
+						templateUrl: "partials/browse.html"
+					}
+				}
+			})
+			.state('app.playlists', {
+				url: "/playlists",
+				views: {
+					'menuContent': {
+						templateUrl: "partials/playlists.html",
+						controller: 'PlaylistsCtrl'
+					}
+				}
+			})
+
+			.state('app.single', {
+				url: "/playlists/:playlistId",
+				views: {
+					'menuContent': {
+						templateUrl: "partials/player.html",
+						controller: 'PlayerCtrl'
+					}
+				}
+			});
+		// if none of the above states are matched, use this as the fallback
+		$urlRouterProvider.otherwise('/app/playlists');
+	})
+//	['$routeProvider', function ($routeProvider) {
+//    $routeProvider.
+//    when('/', {
+//      templateUrl: 'partials/player.html',
+//      controller: 'PlayerCtrl',
+//			//resolve: {
+//			//	Id: function(){
+//			//		return Media.get();
+//			//	}
+//			//}
+//    }).
+//    when('/latest', {
+//      templateUrl: 'partials/player.html',
+//      controller: 'PlayerCtrl',
+//			//resolve: {
+//			//	library: function (Media) {
+//			//		return Media.get();
+//			//	}
+//			//}
+//    }).
+//    otherwise({ redirectTo: '/' });
+//}])
+//
 .directive('noScroll', function() {
 
 	return {
@@ -39,6 +101,7 @@ angular.module('HypeM', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards'])
 .service('Playlist', ['$http', '$q', function ($http, $q) {
   return {get: function (params) {
     var deferred = $q.defer();
+		console.log(params.playlist);
     $http.get('http://hypem.com/playlist/' + params.playlist + '/all/json/' + params.pagenum + '/data.json')
     .success(function (data) {
       deferred.resolve(data);
@@ -66,159 +129,8 @@ angular.module('HypeM', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards'])
 
 .service('Async', ['$window', function ($window) {
   return $window.async;
-}])
-
-.controller('PlayerCtrl',
-['$scope','Playlist', '$routeParams', '$document', 'Media', '$window', 'Async', 'TDCardDelegate',
-function ($scope, Playlist, $routeParams, $document, Media, $window, Async,  TDCardDelegate) {
-  var addToQueue = function(songs, cb) {
-    var pending = [];
-    for (var key in songs){
-			//console.log(songs);ngs) {
-      if (songs.hasOwnProperty(key) && angular.isObject(songs[key])) {
-        pending.push(songs[key]);
-      }
-    }
-
-    Async.map(pending, function (song, callback) {
-      Media.get(song.mediaid).then(function (media) {
-        song.url = media.url;
-        callback(null, song);
-      }).catch (function (e) {
-        callback(e);
-      });
-    }, function (e, mutated) {
-			$scope.Library = $scope.Library.concat(mutated);
-      queue = queue.concat(mutated);
-      cb();
-    });
-  };
-
-  var getPlaylist = function (cb) {
-    Playlist.get({playlist: $routeParams.playlist || 'popular', pagenum: currentPage}).then(function(songs) {
-      currentPage++;
-      addToQueue(songs, function () {
-				// playerControl is CB
-        cb();
-      });
-    }).catch(function(e) {
-      cb();
-    });
-  };
-
-  $scope.playerControl = function () {
-    if (!$scope.isPlaying) {
-      if (audio.getAttribute('src') === null) {
-        setPlayer();
-      }
-      audio.play();
-      $scope.isPlaying = true;
-    } else {
-      audio.pause();
-      $scope.isPlaying = false;
-    }
-  };
-
-  $scope.nextSong = function () {
-    currentSongIdx++;
-    setPlayer();
-    audio.play();
-    $scope.isPlaying = true;
-    if (currentSongIdx > 0 && currentSongIdx % 20 === 0) {
-      getPlaylist(function () {
-        console.log('updated!');
-      });
-    }
-  };
-
-  $scope.previousSong = function () {
-    if (currentSongIdx > 0 ) {
-      currentSongIdx--;
-      setPlayer();
-      audio.play();
-      $scope.isPlaying = true;
-    }
-  };
-
-  var setPlayer = function () {
-    console.log(queue[currentSongIdx]);
-    $scope.ArtistImage = queue[currentSongIdx].thumb_url_artist;
-    $scope.ArtistName = queue[currentSongIdx].artist;
-    $scope.SongName = queue[currentSongIdx].title;
-    $scope.Cover = queue[currentSongIdx].thumb_url_large;
-		$scope.Id = currentSongIdx;
-    audio.src = queue[currentSongIdx].url;
-  };
-
-  $scope.ArtistImage = null;
-  $scope.ArtistName = null;
-  $scope.SongName = null;
-  $scope.Cover = null;
-	$scope.Id = null;
-	$scope.isPlaying = false;
-	$scope.startTime = 30;
-	$scope.Library = [];
-  var currentSongIdx = 0;
-  var queue = [];
-  var currentPage = 1;
-  var audio = $window.document.getElementById('player');
-  //init
-  getPlaylist(function () {
-    $scope.playerControl();
-  });
-
-  audio.addEventListener('ended', function () {
-    $scope.$apply($scope.nextSong());
-  });
-
-	$scope.cardDestroyed = function(index) {
-		//$scope.cards.splice(index, 1);
-	};
-
-	$scope.addCard = function() {
-		//var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
-		//newCard.id = Math.random();
-		//$scope.cards.push(angular.extend({}, newCard));
-	};
-	$scope.cardSwipedLeft = function(index) {
-		console.log('LEFT SWIPE', index);
-		$scope.nextSong();
-	};
-	$scope.cardSwipedRight = function(index) {
-		console.log('RIGHT SWIPE', index);
-		$scope.nextSong();
-	};
-
 }]);
 
-//.controller('CardsCtrl', function($scope, TDCardDelegate, Playlist) {
-//	console.log('CARDS CTRL');
-//	var cardTypes = [
-//		{ image: 'https://pbs.twimg.com/profile_images/546942133496995840/k7JAxvgq.jpeg' },
-//		{ image: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png' },
-//		{ image: 'https://pbs.twimg.com/profile_images/491995398135767040/ie2Z_V6e.jpeg' },
-//	];
-//
-//	$scope.cards = Array.prototype.slice.call(cardTypes, 0);
-//
-//	$scope.cardDestroyed = function(index) {
-//		$scope.cards.splice(index, 1);
-//	};
-//
-//	$scope.addCard = function() {
-//		var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
-//		newCard.id = Math.random();
-//		$scope.cards.push(angular.extend({}, newCard));
-//	}
-//})
-//
-//	.controller('CardCtrl', function($scope, TDCardDelegate, Playlist) {
-//		$scope.cardSwipedLeft = function(index) {
-//			console.log('LEFT SWIPE');
-//			$scope.addCard();
-//		};
-//		$scope.cardSwipedRight = function(index) {
-//			console.log('RIGHT SWIPE');
-//			$scope.addCard();
-//		};
-//	});
+
+
+

@@ -1,0 +1,6 @@
+bower_components
+platforms
+plugins
+.cordova
+ionic.project
+npm-debug.log

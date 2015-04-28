@@ -1,8 +1,8 @@
 <audio id="player"></audio>
 <td-cards>
     <td-card ng-repeat="song in Library"
-            on-destroy="" on-swipe-left="cardSwipedLeft()" on-swipe-right="cardSwipedRight()"
-             on-partial-swipe="cardPartialSwipe(amt)" class="card-{{Id}}">
+            on-destroy="" on-swipe-left="cardSwipedLeft('{{song.mediaid}}')" on-swipe-right="cardSwipedRight('{{song.mediaid}}')"
+             on-partial-swipe="cardPartialSwipe(amt)" class="card-{{song.mediaid}}">
         <div class="item">
             <!--<img src={{ArtistImage}}>-->
             <h2>{{SongName}}</h2>
