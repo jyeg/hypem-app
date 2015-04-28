@@ -1,19 +1,16 @@
 <ion-view view-title="Favorites">
-	<ion-header-bar class="bar-stable">
-	      <h1 class="title">Favs</h1>
-	</ion-header-bar>
 	<ion-content>
-		<ion-list>
-		  <ion-item ng-repeat="song in favorites" class="item-avatar">
-		    <img ng-src="{{ song.thumb_url }}">
-		    <h2>{{ song.title }}</h2>
-		    <p>{{ song.artist }}</p>
+	<ion-list>
+	<ion-item ng-repeat="song in favorites" class="item-avatar">
+	<img src="{{song.thumb_url}}">
+	<h2>{{ song.title }}</h2>
+<p>{{ song.artist }}</p>
 
-		    <ion-option-button class="button-assertive"
-		                   ng-click="removeSong(song, $index)">
-		      <i class="ion-minus-circled"></i>
-		    </ion-option-button>
-		  </ion-item>
-		</ion-list>
+<ion-option-button class="button-assertive"
+ng-click="removeSong(song, $index)">
+	<i class="ion-minus-circled"></i>
+	</ion-option-button>
+	</ion-item>
+	</ion-list>
 	</ion-content>
-</ion-view>
+	</ion-view>

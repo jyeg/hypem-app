@@ -1,9 +1,9 @@
-<ion-view view-title="Player" no-scroll>
+<ion-view view-title="Player">
     <ion-content>
         <audio id="player"></audio>
         <td-cards>
             <td-card ng-repeat="song in Library"
-                     on-destroy="" on-swipe-left="cardSwipedLeft('{{song.mediaid}}')"
+                     on-destroy="cardDestroyed('{{song.mediaid}}')" on-swipe-left="cardSwipedLeft('{{song.mediaid}}')"
                      on-swipe-right="cardSwipedRight('{{song.mediaid}}')"
                      on-partial-swipe="cardPartialSwipe(amt)" class="card-{{song.mediaid}}">
                 <div class="item">

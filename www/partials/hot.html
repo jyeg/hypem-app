@@ -1,0 +1,19 @@
+<ion-view view-title="Favorites">
+    <ion-content>
+        <ion-list ng-hide="favorites.length">
+            <ion-item  ng-repeat="song in favorites" class="item-avatar">
+                <!--<img src='"{{song.thumb_url}}"'>-->
+                <h2>{{ song.title }}</h2>
+                <p>{{ song.artist }}</p>
+
+                <ion-option-button class="button-assertive"
+                                   ng-click="removeSong(song, $index)">
+                    <i class="ion-minus-circled"></i>
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+        <ion-content>
+            <h2>You have no hotness</h2>
+        </ion-content>
+    </ion-content>
+</ion-view>

@@ -31,22 +31,26 @@ angular.module('R8eor.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+
+	//$scope.
 })
 
 .controller('PlaylistsCtrl', function($scope) {
   $scope.playlists = [
     { title: 'Popular', id: 'Popular' },
-    { title: 'Fresh', id: 'Fresh' }
+    { title: 'Fresh', id: 'Fresh' },
+		{ title: 'EDM', id: 'EDM' }
+
   ];
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-})
+//.controller('PlaylistCtrl', function($scope, $stateParams) {
+//})
 
 .controller('FavoritesCtrl', function($scope, User) {
   // get the list of our favorites from the user service
   $scope.favorites = User.favorites;
-
+	console.log($scope.favorites);
   $scope.removeSong = function(song, index){
 
   };
@@ -167,6 +171,7 @@ angular.module('R8eor.controllers', [])
       $scope.cardDestroyed = function(index) {
         //$scope.cards.splice(index, 1);
         $scope.Library.splice(0, 1);
+				//var song = $scope.Library.filter(function(val){ return val.mediaid === index });
       };
 
       $scope.addCard = function() {
@@ -184,6 +189,12 @@ angular.module('R8eor.controllers', [])
         User.addSongToFavorites(song);
         $scope.nextSong();
       };
+
+			$scope.cardPartialSwipe = function(index) {
+				var song = $scope.Library.filter(function(val){ return val.mediaid === index });
+				User.addSongToFavorites(song);
+				$scope.nextSong();
+			};
 
       $scope.removeSong = function(song, index) {
         User.removeSongFromFavorites(song, index);

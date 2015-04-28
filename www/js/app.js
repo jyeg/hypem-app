@@ -45,7 +45,7 @@ angular.module('R8eor', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards', 'R8
 				url: "/favorites",
 				views: {
 					'menuContent': {
-						templateUrl: "partials/favorites.html",
+						templateUrl: "partials/hot.html",
 						controller: 'FavoritesCtrl'
 					}
 				}
@@ -159,7 +159,7 @@ angular.module('R8eor', ['ionic', 'ngRoute', 'ionic.contrib.ui.tinderCards', 'R8
   return {get: function (params) {
     var deferred = $q.defer();
 		console.log(params.playlist);
-    $http.get('http://hypem.com/playlist/' + params.playlist + '/all/json/' + params.pagenum + '/data.json')
+    $http.get('http://hypem.com/playlist/latest/fresh/json/' + params.pagenum + '/data.json')
     .success(function (data) {
       deferred.resolve(data);
     })
